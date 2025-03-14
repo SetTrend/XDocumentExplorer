@@ -1,0 +1,295 @@
+﻿<Window x:Class="XDocumentExplorer.WpfWindows.MainWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:w="clr-namespace:XDocumentExplorer.WpfWindows.MainWindow"
+				xmlns:cnv="clr-namespace:XDocumentExplorer.Converters"
+        xmlns:cmd="clr-namespace:XDocumentExplorer.Commands"
+        mc:Ignorable="d"
+        Title="{Binding RelativeSource={RelativeSource Mode=Self}, Path=TitleText}" Height="450" Width="800"
+				FocusManager.FocusedElement="{Binding ElementName=InputXml}" 
+				Closing="Window_Closing" Closed="Window_Closed"
+				>
+	<DockPanel>
+		<DockPanel.Resources>
+			<cmd:QuitCommand x:Key="QuitCmd"/>
+			<cmd:FocusCommand x:Key="FocusCmd"/>
+			<cmd:BlanksCommand x:Key="BlanksCmd"/>
+			<cmd:LinqCommand x:Key="LinqCmd"/>
+			<cmd:OptionsCommand x:Key="OptionsCmd"/>
+			<cmd:AboutCommand x:Key="AboutCmd"/>
+		</DockPanel.Resources>
+
+		<DockPanel.CommandBindings>
+			<CommandBinding Executed="New_Executed" Command="ApplicationCommands.New"/>
+			<CommandBinding Executed="Open_Executed" Command="ApplicationCommands.Open"/>
+			<CommandBinding Executed="Save_Executed" CanExecute="Save_CanExecute" Command="ApplicationCommands.Save"/>
+			<CommandBinding Executed="SaveAs_Executed" CanExecute="SaveAs_CanExecute" Command="ApplicationCommands.SaveAs"/>
+			<CommandBinding Executed="Quit_Executed" Command="{StaticResource ResourceKey=QuitCmd}"/>
+			<CommandBinding Executed="Focus_Executed" Command="{StaticResource ResourceKey=FocusCmd}"/>
+			<CommandBinding Executed="Blanks_Executed" Command="{StaticResource ResourceKey=BlanksCmd}"/>
+			<CommandBinding Executed="Linq_Executed" Command="{StaticResource ResourceKey=LinqCmd}"/>
+			<CommandBinding Executed="Options_Executed" Command="{StaticResource ResourceKey=OptionsCmd}"/>
+			<CommandBinding Executed="About_Executed" Command="{StaticResource ResourceKey=AboutCmd}"/>
+		</DockPanel.CommandBindings>
+
+		<StackPanel DockPanel.Dock="Top">
+			<Menu x:Name="MainMenu">
+				<MenuItem x:Name="FileMenu" Header="_File">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem" x:Key="NewIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/New/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/New/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="OpenIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Open/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Open/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="SaveIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Save/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Save/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</MenuItem.Resources>
+
+					<MenuItem x:Name="FileMenuNew" Header="_New" Command="ApplicationCommands.New" Style="{StaticResource ResourceKey=NewIcons}"/>
+					<MenuItem x:Name="FileMenuOpen" Header="_Open" Command="ApplicationCommands.Open" Style="{StaticResource ResourceKey=OpenIcons}"/>
+					<MenuItem x:Name="FileMenuSave" Header="_Save" Command="ApplicationCommands.Save" Style="{StaticResource ResourceKey=SaveIcons}"/>
+					<MenuItem x:Name="FileMenuSaveAs" Header="Save _as" Command="ApplicationCommands.SaveAs"/>
+					<Separator x:Name="FileMenuRecentSep" Visibility="Collapsed"/>
+					<MenuItem x:Name="FileMenuRecent" Header="_Recent files" Visibility="Collapsed"/>
+					<Separator/>
+					<MenuItem x:Name="FileMenuQuit" Header="_Quit" Command="{StaticResource ResourceKey=QuitCmd}"/>
+				</MenuItem>
+
+				<MenuItem x:Name="ViewMenu" Header="_View">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem" x:Key="WhiteSpaceIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/WhiteSpace/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/WhiteSpace/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</MenuItem.Resources>
+
+					<MenuItem x:Name="ViewMenuFocusTextBox" Header="Go to _text input box" Command="{StaticResource ResourceKey=FocusCmd}"/>
+					<Separator/>
+					<MenuItem x:Name="ViewMenuShowBlanks" Header="Show blank characters" IsCheckable="True" Command="{StaticResource ResourceKey=BlanksCmd}"
+										DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=w:MainWindow}}" IsChecked="{Binding Path=ShowBlanks}"
+										Style="{StaticResource ResourceKey=WhiteSpaceIcons}"/>
+					<MenuItem x:Name="ViewMenuUseCode" Header="Use LINQ to XML" IsCheckable="True" Command="{StaticResource ResourceKey=LinqCmd}"
+										DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=w:MainWindow}}" IsChecked="{Binding Path=UseCode, Mode=OneWay}"/>
+				</MenuItem>
+
+				<MenuItem x:Name="ToolsMenu" Header="_Tools">
+					<MenuItem x:Name="ToolsMenuOptions" Header="_Options" Command="{StaticResource ResourceKey=OptionsCmd}"/>
+				</MenuItem>
+
+				<MenuItem x:Name="HelpMenu" Header="_Help">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem" x:Key="HelpIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Help/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Help/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</MenuItem.Resources>
+
+					<MenuItem x:Name="HelpMenuAbout" Header="_About" Command="{StaticResource ResourceKey=AboutCmd}" Style="{StaticResource ResourceKey=HelpIcons}"/>
+				</MenuItem>
+			</Menu>
+
+			<ToolBar KeyboardNavigation.TabNavigation="Once">
+				<ToolBar.Resources>
+					<Style TargetType="Image">
+						<Setter Property="Height" Value="16"/>
+					</Style>
+
+					<Style TargetType="Button" x:Key="NewIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/New/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/New/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" x:Key="OpenIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Open/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Open/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" x:Key="SaveIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Save/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Save/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</ToolBar.Resources>
+
+				<Button Command="ApplicationCommands.New" Style="{StaticResource ResourceKey=NewIcons}" Padding="2 3"/>
+				<Button Command="ApplicationCommands.Open" Style="{StaticResource ResourceKey=OpenIcons}" Padding="2 3"/>
+				<Button Command="ApplicationCommands.Save" Style="{StaticResource ResourceKey=SaveIcons}" Padding="2 3"/>
+			</ToolBar>
+		</StackPanel>
+
+		<Grid Background="#456">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<Border Grid.Row="0" Margin="5" BorderBrush="#abc" BorderThickness="1" CornerRadius="3" Padding="5">
+				<Grid>
+					<Grid.Resources>
+						<cnv:VisibilityConverter x:Key="VisCon"/>
+						<cmd:SubmitCommand x:Key="SubmitCmd"/>
+					</Grid.Resources>
+
+					<Grid.CommandBindings>
+						<CommandBinding Executed="Submit_Executed" Command="{StaticResource SubmitCmd}"/>
+					</Grid.CommandBindings>
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+
+					<TextBox x:Name="InputXml" d:Text="This is test XML content" Grid.Row="0" Background="#ecf0f2" FontFamily="Consolas"
+									 TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" VerticalAlignment="Stretch"
+									 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+									 TextChanged="InputXml_TextChanged" PreviewKeyDown="InputXml_PreviewKeyDown"
+									 AllowDrop="True" PreviewDragOver="InputXml_PreviewDragOver" Drop="InputXml_Drop"
+									 >
+						<TextBox.CommandBindings>
+							<CommandBinding Executed="InputXml_Paste" Command="ApplicationCommands.Paste"/>
+						</TextBox.CommandBindings>
+					</TextBox>
+					<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 3 0 0" Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=w:MainWindow}, Path=UseCode, Converter={StaticResource ResourceKey=VisCon}}">
+						<Button x:Name="SubmitButton" Content="Submit" Padding="10 2" Command="{StaticResource ResourceKey=SubmitCmd}"/>
+					</StackPanel>
+				</Grid>
+			</Border>
+
+			<GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5" Background="Gray"/>
+
+			<Border Margin="5" Grid.Row="2">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+
+					<ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+						<TreeView x:Name="XmlNodesTree">
+							<TreeView.Resources>
+								<Style TargetType="TextBlock">
+									<Setter Property="FontFamily" Value="Consolas"/>
+								</Style>
+								<Style TargetType="TreeViewItem">
+									<Setter Property="IsExpanded" Value="True"/>
+								</Style>
+							</TreeView.Resources>
+						</TreeView>
+					</ScrollViewer>
+
+					<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="5" Background="Gray"/>
+
+					<ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+						<TextBlock x:Name="ErrorList" d:Text="This is a test error message." TextWrapping="WrapWithOverflow" Foreground="#ea9" Padding="5" />
+					</ScrollViewer>
+				</Grid>
+			</Border>
+		</Grid>
+	</DockPanel>
+</Window>

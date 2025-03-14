@@ -1,0 +1,35 @@
+﻿using Microsoft.Win32;
+
+using XDocumentExplorer.WpfWindows.MainWindow;
+
+namespace XDocumentExplorer.Code
+{
+	/// <summary>
+	///		Stores user preference settings in
+	///		the Windows Registry.
+	/// </summary>
+	/// <remarks>
+	///		This class is obsolete and only left
+	///		here for nostalgic reasons. It may
+	///		be deleted at any time.
+	/// </remarks>
+	internal static class PreferencesStorage
+	{
+		private static RegistryKey? ProgramRegKey => Registry.CurrentUser.OpenSubKey("SOFTWARE", true)!.CreateSubKey("Axel Dahmen").CreateSubKey(ControlTexts.MainWin);
+
+		internal static RegistryKey? MruFileRegKey => ProgramRegKey?.CreateSubKey("File MRU");
+
+
+
+		internal static string? GetString(string name, string? defaultValue) => ProgramRegKey?.GetValue(name, defaultValue) as string ?? defaultValue;
+		internal static void SetString(string name, string value) => ProgramRegKey?.SetValue(name, value, RegistryValueKind.String);
+
+		internal static int GetInt(string name, int defaultValue) => ProgramRegKey?.GetValue(name, defaultValue) as int? ?? defaultValue;
+		internal static void SetInt(string name, int value) => ProgramRegKey?.SetValue(name, value, RegistryValueKind.DWord);
+
+		internal static bool GetBool(string name, bool defaultValue) => GetInt(name, defaultValue ? 1 : 0) != 0;
+		internal static void SetBool(string name, bool value) => SetInt(name, value ? 1 : 0);
+
+		internal static void Remove(string name) => ProgramRegKey?.DeleteValue(name);
+	}
+}
