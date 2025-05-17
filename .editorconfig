@@ -1,0 +1,17 @@
+root = true
+
+# Markdown and YAML files
+[*.{md,yml,yaml}]
+indent_style = space
+
+# All files
+[*]
+indent_style = tab
+indent_size = 2
+trim_trailing_whitespace = true
+
+[*.{cs,vb}]
+
+# Disable "prefer primary constructor" warning
+dotnet_diagnostic.IDE0290.severity = none
+dotnet_diagnostic.SYSLIB1045.severity = none
