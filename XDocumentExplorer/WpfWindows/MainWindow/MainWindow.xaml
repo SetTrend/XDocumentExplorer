@@ -1,0 +1,753 @@
+﻿<Window x:Class="XDocumentExplorer.WpfWindows.MainWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:w="clr-namespace:XDocumentExplorer.WpfWindows.MainWindow"
+				xmlns:fruc="clr-namespace:XDocumentExplorer.UserControls.FindReplaceControl"
+				xmlns:cnv="clr-namespace:XDocumentExplorer.Converters"
+        xmlns:cmd="clr-namespace:XDocumentExplorer.Commands.MainWindow"
+        xmlns:cmf="clr-namespace:XDocumentExplorer.Commands.MainWindow.FindReplace"
+        xmlns:cms="clr-namespace:XDocumentExplorer.Commands.MainWindow.ShowXmlOutput"
+        mc:Ignorable="d"
+				x:Name="MainWin" Title="{Binding ElementName=MainWin, Path=TitleText}"
+				Height="450" Width="800" MinHeight="280" MinWidth="600"
+				FocusManager.FocusedElement="{Binding ElementName=InputXml}" 
+				Closing="Window_Closing" Closed="Window_Closed"
+				>
+	<DockPanel DataContext="{Binding ElementName=MainWin}">
+		<DockPanel.Resources>
+			<cmd:QuitCommand x:Key="QuitCmd"/>
+			<cmf:FindNextCommand x:Key="FindNextCmd"/>
+			<cmf:FindPreviousCommand x:Key="FindPrevCmd"/>
+			<cmf:QuickFindNextCommand x:Key="QuickFindNextCmd"/>
+			<cmf:QuickFindPreviousCommand x:Key="QuickFindPrevCmd"/>
+			<cmd:UseLinqCommand x:Key="UseLinqCmd"/>
+			<cmd:ShowXmlCommand x:Key="ShowXmlCmd"/>
+			<cmd:BlanksCommand x:Key="BlanksCmd"/>
+			<cmd:FocusCommand x:Key="FocusCmd"/>
+			<cmd:OptionsCommand x:Key="OptionsCmd"/>
+			<cmd:AboutCommand x:Key="AboutCmd"/>
+
+			<cms:EscapeXmlCommand x:Key="EscapeXmlCmd"/>
+			<cms:NoDuplicatesCommand x:Key="NoDupCmd"/>
+			<cms:NoFormatCommand x:Key="NoFmtCmd"/>
+
+			<cnv:VisibilityConverter x:Key="VisCon"/>
+		</DockPanel.Resources>
+
+		<DockPanel.CommandBindings>
+			<CommandBinding Executed="New_Executed" Command="ApplicationCommands.New"/>
+			<CommandBinding Executed="Open_Executed" Command="ApplicationCommands.Open"/>
+			<CommandBinding Executed="Save_Executed" CanExecute="Save_CanExecute" Command="ApplicationCommands.Save"/>
+			<CommandBinding Executed="SaveAs_Executed" CanExecute="SaveAs_CanExecute" Command="ApplicationCommands.SaveAs"/>
+			<CommandBinding Executed="Quit_Executed" Command="{StaticResource ResourceKey=QuitCmd}"/>
+			<CommandBinding Executed="InputXml_Cut" CanExecute="Cut_CanExecute" Command="ApplicationCommands.Cut"/>
+			<CommandBinding Executed="InputXml_Copy" CanExecute="Copy_CanExecute" Command="ApplicationCommands.Copy"/>
+			<CommandBinding Executed="InputXml_Paste" CanExecute="Paste_CanExecute" Command="ApplicationCommands.Paste"/>
+			<CommandBinding Executed="Find_Executed" CanExecute="Find_CanExecute" Command="ApplicationCommands.Find"/>
+			<CommandBinding Executed="FindNext_Executed" CanExecute="FindNext_CanExecute" Command="{StaticResource ResourceKey=FindNextCmd}"/>
+			<CommandBinding Executed="FindPrevious_Executed" CanExecute="FindPrevious_CanExecute" Command="{StaticResource ResourceKey=FindPrevCmd}"/>
+			<CommandBinding Executed="QuickFindNext_Executed" CanExecute="QuickFindNext_CanExecute" Command="{StaticResource ResourceKey=QuickFindNextCmd}"/>
+			<CommandBinding Executed="QuickFindPrevious_Executed" CanExecute="QuickFindPrevious_CanExecute" Command="{StaticResource ResourceKey=QuickFindPrevCmd}"/>
+			<CommandBinding Executed="Replace_Executed" CanExecute="Replace_CanExecute" Command="ApplicationCommands.Replace"/>
+			<CommandBinding Executed="Linq_Executed" Command="{StaticResource ResourceKey=UseLinqCmd}"/>
+			<CommandBinding Executed="ShowXml_Executed" Command="{StaticResource ResourceKey=ShowXmlCmd}"/>
+			<CommandBinding Executed="Blanks_Executed" Command="{StaticResource ResourceKey=BlanksCmd}"/>
+			<CommandBinding Executed="Focus_Executed" Command="{StaticResource ResourceKey=FocusCmd}"/>
+			<CommandBinding Executed="Options_Executed" Command="{StaticResource ResourceKey=OptionsCmd}"/>
+			<CommandBinding Executed="About_Executed" Command="{StaticResource ResourceKey=AboutCmd}"/>
+
+			<CommandBinding Executed="EscapeXml_Executed" Command="{StaticResource ResourceKey=EscapeXmlCmd}"/>
+			<CommandBinding Executed="NoDupNsXml_Executed" Command="{StaticResource ResourceKey=NoDupCmd}"/>
+			<CommandBinding Executed="NoFormatXml_Executed" Command="{StaticResource ResourceKey=NoFmtCmd}"/>
+		</DockPanel.CommandBindings>
+
+		<StackPanel DockPanel.Dock="Top">
+			<Menu x:Name="MainMenu">
+				<MenuItem x:Name="FileMenu" Header="_File">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem" x:Key="NewIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/New/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/New/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="OpenIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Open/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Open/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="SaveIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Save/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Save/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</MenuItem.Resources>
+
+					<MenuItem x:Name="FileMenuNew" Header="_New" Command="ApplicationCommands.New" Style="{StaticResource ResourceKey=NewIcons}"/>
+					<MenuItem x:Name="FileMenuOpen" Header="_Open" Command="ApplicationCommands.Open" Style="{StaticResource ResourceKey=OpenIcons}"/>
+					<MenuItem x:Name="FileMenuSave" Header="_Save" Command="ApplicationCommands.Save" Style="{StaticResource ResourceKey=SaveIcons}"/>
+					<MenuItem x:Name="FileMenuSaveAs" Header="Save _as" Command="ApplicationCommands.SaveAs"/>
+
+					<Separator x:Name="FileMenuRecentSep" Visibility="Collapsed"/>
+
+					<MenuItem x:Name="FileMenuRecent" Header="_Recent files" Visibility="Collapsed"/>
+
+					<Separator/>
+
+					<MenuItem x:Name="FileMenuQuit" Header="_Quit" Command="{StaticResource ResourceKey=QuitCmd}"/>
+				</MenuItem>
+
+				<MenuItem x:Name="EditMenu" Header="_Edit">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem" x:Key="CutIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Cut/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Cut/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="CopyIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Copy/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Copy/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="PasteIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Paste/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Paste/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="FindIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Find/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Find/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="ReplaceIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Replace/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Replace/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</MenuItem.Resources>
+
+					<MenuItem x:Name="EditMenuCut" Header="Cu_t" Command="ApplicationCommands.Cut" Style="{StaticResource ResourceKey=CutIcons}"/>
+					<MenuItem x:Name="EditMenuCopy" Header="_Copy" Command="ApplicationCommands.Copy" Style="{StaticResource ResourceKey=CopyIcons}"/>
+					<MenuItem x:Name="EditMenuPaste" Header="_Paste" Command="ApplicationCommands.Paste" Style="{StaticResource ResourceKey=PasteIcons}"/>
+
+					<Separator/>
+
+					<MenuItem x:Name="EditMenuFind" Header="_Find" Command="ApplicationCommands.Find" Style="{StaticResource ResourceKey=FindIcons}"/>
+					<MenuItem x:Name="EditMenuFindNext" Header="Find _Next" Command="{StaticResource ResourceKey=FindNextCmd}"/>
+					<MenuItem x:Name="EditMenuFindPrevious" Header="Find Pre_vious" Command="{StaticResource ResourceKey=FindPrevCmd}"/>
+					<MenuItem x:Name="EditMenuReplace" Header="_Replace" Command="ApplicationCommands.Replace" Style="{StaticResource ResourceKey=ReplaceIcons}"/>
+				</MenuItem>
+
+				<MenuItem x:Name="ViewMenu" Header="_View">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem" x:Key="WhiteSpaceIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/WhiteSpace/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/WhiteSpace/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+
+						<Style TargetType="MenuItem" x:Key="XmlIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Xml/Show/enabled_m.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Xml/Show/disabled_m.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</MenuItem.Resources>
+
+					<MenuItem x:Name="ViewMenuUseCode" Header="Use LIN_Q to XML" IsCheckable="True" CommandParameter="False" Command="{StaticResource ResourceKey=UseLinqCmd}"
+										IsChecked="{Binding Path=UseCode}"/>
+
+					<Separator/>
+
+					<MenuItem x:Name="ViewMenuShowXmlOutput" Header="Show _XDocument XML Output" IsCheckable="True" CommandParameter="False" Command="{StaticResource ResourceKey=ShowXmlCmd}"
+										IsChecked ="{Binding Path=ShowXml}"/>
+
+					<MenuItem x:Name="ViewMenuOptions" Header="XDocument Output _Options" Visibility="{Binding Path=ShowXml, Converter={StaticResource ResourceKey=VisCon}}" Style="{StaticResource ResourceKey=XmlIcons}">
+						<MenuItem.Resources>
+							<Style TargetType="MenuItem" x:Key="NoFormatIcons">
+								<Setter Property="Icon">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Xml/NoFormatting/enabled.png"/>
+									</Setter.Value>
+								</Setter>
+								<Style.Triggers>
+									<Trigger Property="IsEnabled" Value="False">
+										<Setter Property="Icon">
+											<Setter.Value>
+												<Image Source="pack://application:,,,/ToolbarIcons/Xml/NoFormatting/disabled.png"/>
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+
+							<Style TargetType="MenuItem" x:Key="NamespacesIcons">
+								<Setter Property="Icon">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Xml/Namespaces/enabled.png"/>
+									</Setter.Value>
+								</Setter>
+								<Style.Triggers>
+									<Trigger Property="IsEnabled" Value="False">
+										<Setter Property="Icon">
+											<Setter.Value>
+												<Image Source="pack://application:,,,/ToolbarIcons/Xml/Namespaces/disabled.png"/>
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+
+							<Style TargetType="MenuItem" x:Key="EscapeXmlIcons">
+								<Setter Property="Icon">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Xml/Escape/enabled.png"/>
+									</Setter.Value>
+								</Setter>
+								<Style.Triggers>
+									<Trigger Property="IsEnabled" Value="False">
+										<Setter Property="Icon">
+											<Setter.Value>
+												<Image Source="pack://application:,,,/ToolbarIcons/Xml/Escape/disabled.png"/>
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</MenuItem.Resources>
+
+						<MenuItem x:Name="ViewMenuOptionsNoFormat" Header="Disable _Formatting" IsCheckable="True" CommandParameter="False" Command="{StaticResource ResourceKey=NoFmtCmd}"
+											IsChecked="{Binding Path=Options.XmlSaveOptions.DisableFormatting}" Style="{StaticResource ResourceKey=NoFormatIcons}"/>
+
+						<MenuItem x:Name="ViewMenuOptionsNoDuplicate" Header="Omit Duplicate _Namespaces" IsCheckable="True" CommandParameter="False" Command="{StaticResource ResourceKey=NoDupCmd}"
+											IsChecked="{Binding Path=Options.XmlSaveOptions.OmitDuplicateNamespaces}" Style="{StaticResource ResourceKey=NamespacesIcons}"/>
+
+						<MenuItem x:Name="ViewMenuOptionsEscapeChars" Header="Show _Control Characters" IsCheckable="True" CommandParameter="False" Command="{StaticResource ResourceKey=EscapeXmlCmd}"
+											IsChecked="{Binding Path=Options.XmlSaveOptions.EscapeXml}" Style="{StaticResource ResourceKey=EscapeXmlIcons}"/>
+
+					</MenuItem>
+
+					<Separator/>
+
+					<MenuItem x:Name="ViewMenuShowBlanks" Header="_Show Blank Characters" IsCheckable="True" Command="{StaticResource ResourceKey=BlanksCmd}"
+										IsChecked="{Binding Path=ShowBlanks}" Style="{StaticResource ResourceKey=WhiteSpaceIcons}"/>
+
+					<Separator/>
+
+					<MenuItem x:Name="ViewMenuFocusTextBox" Header="Go To _Text Input Box" Command="{StaticResource ResourceKey=FocusCmd}"/>
+				</MenuItem>
+
+				<MenuItem x:Name="ToolsMenu" Header="_Tools">
+					<MenuItem x:Name="ToolsMenuOptions" Header="_Options" Command="{StaticResource ResourceKey=OptionsCmd}"/>
+				</MenuItem>
+
+				<MenuItem x:Name="HelpMenu" Header="_Help">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem" x:Key="HelpIcons">
+							<Setter Property="Icon">
+								<Setter.Value>
+									<Image Source="pack://application:,,,/ToolbarIcons/Help/enabled.png"/>
+								</Setter.Value>
+							</Setter>
+							<Style.Triggers>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Icon">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Help/disabled.png"/>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</MenuItem.Resources>
+
+					<MenuItem x:Name="HelpMenuAbout" Header="_About" Command="{StaticResource ResourceKey=AboutCmd}" Style="{StaticResource ResourceKey=HelpIcons}"/>
+				</MenuItem>
+			</Menu>
+
+			<ToolBar KeyboardNavigation.TabNavigation="Once">
+				<ToolBar.Resources>
+					<Style TargetType="Image">
+						<Setter Property="Height" Value="16"/>
+					</Style>
+
+					<Style TargetType="ButtonBase" x:Key="ButtonBase">
+						<Setter Property="Padding" Value="2 3"/>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="NewIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/New/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/New/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="OpenIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Open/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Open/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="SaveIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Save/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Save/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="CutIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Cut/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Cut/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="CopyIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Copy/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Copy/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="PasteIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Paste/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Paste/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="FindIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Find/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Find/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="ReplaceIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Replace/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Replace/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+
+					<Style TargetType="ToggleButton" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="XmlIcons">
+						<Setter Property="Content">
+							<Setter.Value>
+								<Image Source="pack://application:,,,/ToolbarIcons/Xml/Show/enabled.png"/>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Content">
+									<Setter.Value>
+										<Image Source="pack://application:,,,/ToolbarIcons/Xml/Show/disabled.png"/>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</ToolBar.Resources>
+
+				<Button x:Name="NewButton" Command="ApplicationCommands.New" Style="{StaticResource ResourceKey=NewIcons}"/>
+				<Button x:Name="OpenButton" Command="ApplicationCommands.Open" Style="{StaticResource ResourceKey=OpenIcons}"/>
+				<Button x:Name="SaveButton" Command="ApplicationCommands.Save" Style="{StaticResource ResourceKey=SaveIcons}"/>
+
+				<Separator/>
+
+				<Button x:Name="CutButton" Command="ApplicationCommands.Cut" Style="{StaticResource ResourceKey=CutIcons}"/>
+				<Button x:Name="CopyButton" Command="ApplicationCommands.Copy" Style="{StaticResource ResourceKey=CopyIcons}"/>
+				<Button x:Name="PasteButton" Command="ApplicationCommands.Paste" Style="{StaticResource ResourceKey=PasteIcons}"/>
+
+				<Separator/>
+
+				<Button x:Name="FindButton" Command="ApplicationCommands.Find" Style="{StaticResource ResourceKey=FindIcons}"/>
+				<Button x:Name="ReplaceButton" Command="ApplicationCommands.Replace" Style="{StaticResource ResourceKey=ReplaceIcons}"/>
+
+				<Separator/>
+
+				<ToggleButton x:Name="ShowXmlButton" Style="{StaticResource ResourceKey=XmlIcons}" IsChecked="{Binding ElementName=MainWin, Path=ShowXml}"/>
+			</ToolBar>
+		</StackPanel>
+
+		<Grid Background="#456">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<Border Grid.Row="0" Margin="5" BorderBrush="#abc" BorderThickness="1" CornerRadius="3" Padding="5">
+				<Grid>
+					<Grid.Resources>
+						<cnv:ShowXmlConverter x:Key="ShowXmlCon"/>
+					</Grid.Resources>
+
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition MinWidth="320"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition MinWidth="100"/>
+					</Grid.ColumnDefinitions>
+
+					<Grid Grid.Column="0" Grid.ColumnSpan="{Binding Path=ShowXml, Converter={StaticResource ResourceKey=ShowXmlCon}, ConverterParameter=3}">
+						<Grid.Resources>
+							<cmd:SubmitCommand x:Key="SubmitCmd"/>
+						</Grid.Resources>
+
+						<Grid.CommandBindings>
+							<CommandBinding Executed="Submit_Executed" Command="{StaticResource SubmitCmd}"/>
+						</Grid.CommandBindings>
+
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+
+						<Grid>
+							<TextBox x:Name="InputXml" d:Text="This is test XML content" Grid.Row="0" MinWidth="100"
+											 Background="#ecf0f2" FontFamily="Consolas" TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True"
+											 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AllowDrop="True" IsInactiveSelectionHighlightEnabled="True"
+											 TextChanged="InputXml_TextChanged" PreviewKeyDown="InputXml_PreviewKeyDown" PreviewDragOver="InputXml_PreviewDragOver" Drop="InputXml_Drop"
+											 SizeChanged="InputXml_SizeChanged"
+											 >
+								<TextBox.Style>
+									<Style TargetType="TextBox">
+										<Style.Triggers>
+											<Trigger Property="IsKeyboardFocused" Value="False">
+												<Trigger.Setters>
+													<Setter Property="SelectionBrush" Value="SkyBlue"/>
+												</Trigger.Setters>
+											</Trigger>
+										</Style.Triggers>
+									</Style>
+								</TextBox.Style>
+							</TextBox>
+
+							<Border x:Name="FindReplaceBox" Margin="1" BorderThickness="1" BorderBrush="Gray" Background="#e0e2ea"
+										Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="320" KeyUp="FindReplace_KeyUp">
+								<DockPanel>
+									<Rectangle x:Name="ResizeBar" DockPanel.Dock="Left" Stroke="#bcd" StrokeThickness="2" Fill="#9ab" RadiusX="2" RadiusY="2" Width="5" Cursor="SizeWE" MouseDown="FindReplace_StartResize" MouseMove="FindReplace_Resize" MouseUp="FindReplace_EndResize"/>
+									<fruc:FindReplaceControl x:Name="FindReplaceCtrl" Settings="{Binding ElementName=MainWin, Path=Options.FindReplaceSettings, Mode=OneWay}" TextBox="{x:Reference Name=InputXml}"/>
+								</DockPanel>
+							</Border>
+						</Grid>
+
+						<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 3 0 0" Visibility="{Binding ElementName=MainWin, Path=UseCode, Converter={StaticResource ResourceKey=VisCon}}">
+							<Button x:Name="SubmitButton" Content="Submit" Padding="10 2" Command="{StaticResource ResourceKey=SubmitCmd}"/>
+						</StackPanel>
+					</Grid>
+
+					<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="5" Background="Gray" Visibility="{Binding Path=ShowXml, Converter={StaticResource ResourceKey=VisCon}}"/>
+
+					<DockPanel Grid.Column="2" Visibility="{Binding Path=ShowXml, Converter={StaticResource ResourceKey=VisCon}}">
+						<DockPanel.CommandBindings>
+							<CommandBinding CanExecute="Never_CanExecute" Command="ApplicationCommands.Paste"/>
+						</DockPanel.CommandBindings>
+
+						<ToolBar x:Name="XmlToolbar" DockPanel.Dock="Top" KeyboardNavigation.TabNavigation="Once">
+							<ToolBar.Resources>
+								<Style TargetType="Image">
+									<Setter Property="Height" Value="16"/>
+								</Style>
+
+								<Style TargetType="ButtonBase" x:Key="ButtonBase">
+									<Setter Property="Padding" Value="2 3"/>
+								</Style>
+
+								<Style TargetType="ToggleButton" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="NoFormatIcons">
+									<Setter Property="Content">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Xml/NoFormatting/enabled.png"/>
+										</Setter.Value>
+									</Setter>
+									<Style.Triggers>
+										<Trigger Property="IsEnabled" Value="False">
+											<Setter Property="Content">
+												<Setter.Value>
+													<Image Source="pack://application:,,,/ToolbarIcons/Xml/NoFormatting/disabled.png"/>
+												</Setter.Value>
+											</Setter>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+
+								<Style TargetType="ToggleButton" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="NamespaceIcons">
+									<Setter Property="Content">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Xml/Namespaces/enabled.png"/>
+										</Setter.Value>
+									</Setter>
+									<Style.Triggers>
+										<Trigger Property="IsEnabled" Value="False">
+											<Setter Property="Content">
+												<Setter.Value>
+													<Image Source="pack://application:,,,/ToolbarIcons/Xml/Namespaces/disabled.png"/>
+												</Setter.Value>
+											</Setter>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+
+								<Style TargetType="ToggleButton" BasedOn="{StaticResource ResourceKey=ButtonBase}" x:Key="EscapeIcons">
+									<Setter Property="Content">
+										<Setter.Value>
+											<Image Source="pack://application:,,,/ToolbarIcons/Xml/Escape/enabled.png"/>
+										</Setter.Value>
+									</Setter>
+									<Style.Triggers>
+										<Trigger Property="IsEnabled" Value="False">
+											<Setter Property="Content">
+												<Setter.Value>
+													<Image Source="pack://application:,,,/ToolbarIcons/Xml/Escape/disabled.png"/>
+												</Setter.Value>
+											</Setter>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</ToolBar.Resources>
+
+							<ToggleButton x:Name="NoFormatButton" IsChecked="{Binding Path=Options.XmlSaveOptions.DisableFormatting}" Style="{StaticResource ResourceKey=NoFormatIcons}" CommandParameter="False" Command="{StaticResource ResourceKey=NoFmtCmd}"/>
+							<ToggleButton x:Name="OmitDuplicateNsButton" IsChecked="{Binding Path=Options.XmlSaveOptions.OmitDuplicateNamespaces}" Style="{StaticResource ResourceKey=NamespaceIcons}" CommandParameter="False" Command="{StaticResource ResourceKey=NoDupCmd}"/>
+
+							<Separator/>
+
+							<ToggleButton x:Name="EscapeXmlButton" IsChecked="{Binding Path=Options.XmlSaveOptions.EscapeXml}" Style="{StaticResource ResourceKey=EscapeIcons}" CommandParameter="False" Command="{StaticResource ResourceKey=EscapeXmlCmd}"/>
+						</ToolBar>
+
+						<TextBox x:Name="XmlOutput" d:Text="This is test XML content"
+									 Background="#dfe0e2" FontFamily="Consolas" TextWrapping="WrapWithOverflow" IsReadOnly="True"
+									 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+									 />
+					</DockPanel>
+				</Grid>
+			</Border>
+
+			<GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5" Background="Gray"/>
+
+			<Border Margin="5" Grid.Row="2">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+
+					<ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+						<TreeView x:Name="XmlNodesTree">
+							<TreeView.Resources>
+								<Style TargetType="TextBlock">
+									<Setter Property="FontFamily" Value="Consolas"/>
+								</Style>
+								<Style TargetType="TreeViewItem">
+									<Setter Property="IsExpanded" Value="True"/>
+								</Style>
+							</TreeView.Resources>
+						</TreeView>
+					</ScrollViewer>
+
+					<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="5" Background="Gray"/>
+
+					<ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+						<TextBlock x:Name="ErrorList" d:Text="This is a test error message." TextWrapping="WrapWithOverflow" Foreground="#ea9" Padding="5" />
+					</ScrollViewer>
+				</Grid>
+			</Border>
+		</Grid>
+	</DockPanel>
+</Window>

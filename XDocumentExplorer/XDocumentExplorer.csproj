@@ -1,0 +1,200 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<IsPublishable>False</IsPublishable>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<ApplicationIcon>ProgramIcons\RoundTree.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AxDa.EnhancedXmlWriter" Version="1.0.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="FindReplaceIcons\CaseSensitive\disabled.png" />
+		<Resource Include="FindReplaceIcons\CaseSensitive\enabled.png" />
+		<Resource Include="FindReplaceIcons\FindNext\right\disabled.png" />
+		<Resource Include="FindReplaceIcons\FindNext\right\enabled.png" />
+		<Resource Include="FindReplaceIcons\FindPrevious\right\disabled.png" />
+		<Resource Include="FindReplaceIcons\FindPrevious\right\enabled.png" />
+		<Resource Include="FindReplaceIcons\Find\right\disabled.png" />
+		<Resource Include="FindReplaceIcons\Find\right\enabled.png" />
+		<Resource Include="FindReplaceIcons\RegularExpression\disabled.png" />
+		<Resource Include="FindReplaceIcons\RegularExpression\enabled.png" />
+		<Resource Include="FindReplaceIcons\ReplaceAll\disabled.png" />
+		<Resource Include="FindReplaceIcons\ReplaceAll\enabled.png" />
+		<Resource Include="FindReplaceIcons\Replace\disabled.png" />
+		<Resource Include="FindReplaceIcons\Replace\enabled.png" />
+		<Resource Include="FindReplaceIcons\WholeWord\disabled.png" />
+		<Resource Include="FindReplaceIcons\WholeWord\enabled.png" />
+		<Resource Include="FindReplaceIcons\Wrap\disabled.png" />
+		<Resource Include="FindReplaceIcons\Wrap\enabled.png" />
+		<Resource Include="ProgramIcons\RoundTree.png" />
+		<Resource Include="ToolbarIcons\Copy\disabled.png" />
+		<Resource Include="ToolbarIcons\Copy\enabled.png" />
+		<Resource Include="ToolbarIcons\Cut\disabled.png" />
+		<Resource Include="ToolbarIcons\Cut\enabled.png" />
+		<Resource Include="ToolbarIcons\Find\disabled.png" />
+		<Resource Include="ToolbarIcons\Find\enabled.png" />
+		<Resource Include="ToolbarIcons\Help\disabled.png" />
+		<Resource Include="ToolbarIcons\Help\enabled.png" />
+		<Resource Include="ToolbarIcons\New\disabled.png" />
+		<Resource Include="ToolbarIcons\New\enabled.png" />
+		<Resource Include="ToolbarIcons\Open\disabled.png" />
+		<Resource Include="ToolbarIcons\Open\enabled.png" />
+		<Resource Include="ToolbarIcons\Paste\disabled.png" />
+		<Resource Include="ToolbarIcons\Paste\enabled.png" />
+		<Resource Include="ToolbarIcons\Replace\disabled.png" />
+		<Resource Include="ToolbarIcons\Replace\enabled.png" />
+		<Resource Include="ToolbarIcons\Save\disabled.png" />
+		<Resource Include="ToolbarIcons\Save\enabled.png" />
+		<Resource Include="ToolbarIcons\WhiteSpace\disabled.png" />
+		<Resource Include="ToolbarIcons\WhiteSpace\enabled.png" />
+		<Resource Include="ToolbarIcons\Xml\Escape\disabled.png" />
+		<Resource Include="ToolbarIcons\Xml\Escape\enabled.png" />
+		<Resource Include="ToolbarIcons\Xml\Namespaces\disabled.png" />
+		<Resource Include="ToolbarIcons\Xml\Namespaces\enabled.png" />
+		<Resource Include="ToolbarIcons\Xml\NoFormatting\disabled.png" />
+		<Resource Include="ToolbarIcons\Xml\NoFormatting\enabled.png" />
+		<Resource Include="ToolbarIcons\Xml\Show\disabled.png" />
+		<Resource Include="ToolbarIcons\Xml\Show\disabled_m.png" />
+		<Resource Include="ToolbarIcons\Xml\Show\enabled.png" />
+		<Resource Include="ToolbarIcons\Xml\Show\enabled_m.png" />
+		<Resource Include="TreeIcons\aqua.png" />
+		<Resource Include="TreeIcons\blue.png" />
+		<Resource Include="TreeIcons\gray.png" />
+		<Resource Include="TreeIcons\green.png" />
+		<Resource Include="TreeIcons\orange.png" />
+		<Resource Include="TreeIcons\pink.png" />
+		<Resource Include="TreeIcons\purple.png" />
+		<Resource Include="TreeIcons\turquoise.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<SplashScreen Include="SplashScreen\SplashScreen.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Code\FindReplace\Messages.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Messages.resx</DependentUpon>
+		</Compile>
+		<Compile Update="UserControls\FindReplaceControl\ControlTexts.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ControlTexts.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Code\ToolBarToolTips\Modifiers.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Modifiers.resx</DependentUpon>
+		</Compile>
+		<Compile Update="WpfWindows\AboutWindow\ControlTexts.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ControlTexts.resx</DependentUpon>
+		</Compile>
+		<Compile Update="WpfWindows\MainWindow\ControlTexts.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ControlTexts.resx</DependentUpon>
+		</Compile>
+		<Compile Update="WpfWindows\MainWindow\MenuItems.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MenuItems.resx</DependentUpon>
+		</Compile>
+		<Compile Update="WpfWindows\MainWindow\Messages.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Messages.resx</DependentUpon>
+		</Compile>
+		<Compile Update="WpfWindows\OptionsWindow\ControlTexts.Designer.cs">
+			<DependentUpon>ControlTexts.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Code\FindReplace\Messages.de.resx">
+		  <LastGenOutput>Messages.de.Designer.cs</LastGenOutput>
+		  <Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Code\FindReplace\Messages.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UserControls\FindReplaceControl\ControlTexts.de.resx">
+			<LastGenOutput>ControlTexts.de.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UserControls\FindReplaceControl\ControlTexts.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ControlTexts.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Code\ToolBarToolTips\Modifiers.de.resx">
+			<LastGenOutput>Messages.de.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Code\ToolBarToolTips\Modifiers.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Modifiers.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\AboutWindow\ControlTexts.de.resx">
+			<LastGenOutput>ControlTexts.de.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\AboutWindow\ControlTexts.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ControlTexts.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\MainWindow\ControlTexts.de.resx">
+			<LastGenOutput>ControlTexts.de.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\MainWindow\ControlTexts.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ControlTexts.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\MainWindow\MenuItems.de.resx">
+			<LastGenOutput>ControlTexts.de.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\MainWindow\MenuItems.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>MenuItems.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\MainWindow\Messages.de.resx">
+			<LastGenOutput>Messages.de.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\MainWindow\Messages.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Messages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\OptionsWindow\ControlTexts.de.resx">
+			<SubType>Designer</SubType>
+			<LastGenOutput>ControlTexts.de.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="WpfWindows\OptionsWindow\ControlTexts.resx">
+			<LastGenOutput>ControlTexts.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

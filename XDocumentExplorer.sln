@@ -1,0 +1,71 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projektmappenelemente", "Projektmappenelemente", "{84D27F74-D2BA-6C25-2661-968F101900D9}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		License.md = License.md
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{EE96A064-F7AD-4353-B77D-6D7B57E40202}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\BuildOnPush.yaml = .github\workflows\BuildOnPush.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".doc", ".doc", "{80A046A4-6C50-4844-99D0-DC2967B1518A}"
+	ProjectSection(SolutionItems) = preProject
+		.doc\main_win.cpt = .doc\main_win.cpt
+		.doc\main_win.png = .doc\main_win.png
+		.doc\main_win_l_o_o_o.png = .doc\main_win_l_o_o_o.png
+		.doc\main_win_l_o_o_s.png = .doc\main_win_l_o_o_s.png
+		.doc\main_win_l_q_n_o.png = .doc\main_win_l_q_n_o.png
+		.doc\main_win_l_q_n_s.png = .doc\main_win_l_q_n_s.png
+		.doc\main_win_l_q_o_o.png = .doc\main_win_l_q_o_o.png
+		.doc\main_win_l_q_o_s.png = .doc\main_win_l_q_o_s.png
+		.doc\main_win_xml_err.png = .doc\main_win_xml_err.png
+		.doc\main_win_x_o_o_o.png = .doc\main_win_x_o_o_o.png
+		.doc\main_win_x_o_o_s.png = .doc\main_win_x_o_o_s.png
+		.doc\main_win_x_q_n_o.png = .doc\main_win_x_q_n_o.png
+		.doc\main_win_x_q_n_s.png = .doc\main_win_x_q_n_s.png
+		.doc\main_win_x_q_o_o.png = .doc\main_win_x_q_o_o.png
+		.doc\main_win_x_q_o_s.png = .doc\main_win_x_q_o_s.png
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDocumentExplorer", "XDocumentExplorer\XDocumentExplorer.csproj", "{486536C2-66FC-8B04-207F-AD6CFF5B4DEA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tbButtons", "tbButtons", "{9E13E32A-3A2C-453E-B618-6482B33AB335}"
+	ProjectSection(SolutionItems) = preProject
+		.doc\tbButtons\disable-formatting.png = .doc\tbButtons\disable-formatting.png
+		.doc\tbButtons\no-duplicate-namespaces.png = .doc\tbButtons\no-duplicate-namespaces.png
+		.doc\tbButtons\show-control-characters.png = .doc\tbButtons\show-control-characters.png
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{486536C2-66FC-8B04-207F-AD6CFF5B4DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{486536C2-66FC-8B04-207F-AD6CFF5B4DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{486536C2-66FC-8B04-207F-AD6CFF5B4DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{486536C2-66FC-8B04-207F-AD6CFF5B4DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {84D27F74-D2BA-6C25-2661-968F101900D9}
+		{EE96A064-F7AD-4353-B77D-6D7B57E40202} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{80A046A4-6C50-4844-99D0-DC2967B1518A} = {84D27F74-D2BA-6C25-2661-968F101900D9}
+		{9E13E32A-3A2C-453E-B618-6482B33AB335} = {80A046A4-6C50-4844-99D0-DC2967B1518A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBE33FEC-AB78-417C-A22F-10EA56A5AC63}
+	EndGlobalSection
+EndGlobal
